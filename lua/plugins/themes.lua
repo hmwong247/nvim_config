@@ -18,6 +18,18 @@ themes.rose_pine = {
 	end,
 }
 
+
+-- wave the default heart-warming theme,
+-- dragon for those late-night sessions
+-- lotus for when you're out in the open.
+themes.kanagawa = {
+	"rebelot/kanagawa.nvim",
+	priority = 1000,
+	init = function()
+		vim.cmd.colorscheme("kanagawa-dragon")
+	end,
+}
+
 return {
-	themes.rose_pine,
+	themes.kanagawa,
 }

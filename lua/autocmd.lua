@@ -17,3 +17,21 @@ vim.api.nvim_create_autocmd("UiEnter", {
 		end
 	end,
 })
+
+vim.api.nvim_create_autocmd('LspAttach', {
+	group = vim.api.nvim_create_augroup('lsp-autocmd', { clear = true }),
+	callback = function(event)
+		local ts_builtin = require("telescope.builtin")
+		local opts = { buffer = event.bufnr }
+
+		vim.keymap.set("n", "K", ts_builtin.lsp_definitions, opts)
+		vim.keymap.set("n", "<leader>F", ts_builtin.lsp_references, opts)
+		vim.keymap.set("n", "gi", ts_builtin.lsp_implementations, opts)
+		vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
+		vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
+		vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
+		vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+		vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+		vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
+	end
+})
