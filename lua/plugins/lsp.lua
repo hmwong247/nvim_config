@@ -5,6 +5,7 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"williamboman/mason.nvim",
 			"hrsh7th/nvim-cmp",
+			"j-hui/fidget.nvim",
 		},
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
@@ -21,7 +22,6 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"lua_ls",
-					"tsserver",
 				},
 
 				-- NOTE: default handlers for servers setup
@@ -29,18 +29,37 @@ return {
 					function(server_name)
 						require("lspconfig")[server_name].setup {}
 					end,
-					["sourcekit"] = function()
-						require("sourcekit_lsp").setup({
-							cmd = {
-								"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
-							},
+					["lua_ls"] = function()
+						require("lspconfig").lua_ls.setup({
+							settings = {
+								Lua = {
+									diagnostics = {
+										globals = { "vim" }
+									}
+								}
+							}
 						})
 					end,
+
+					-- ["sourcekit"] = function()
+					-- 		require("sourcekit").sourcekit.setup({
+					-- 			cmd = {
+					-- 				"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
+					-- 			},
+					-- 		})
+					-- end,
 				}
 			})
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+			vim.diagnostic.config({
+				update_in_insert = true,
+				virtual_text = true,
+			})
+
+			require("fidget").setup({})
 		end,
 	},
 	{

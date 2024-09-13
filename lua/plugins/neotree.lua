@@ -8,7 +8,11 @@ return {
 	},
 	config = function()
 		require("neo-tree").setup({
-			hijack_netrw_behavior = "disabled",
+			hijack_netrw_behavior = "open_default",
+			source_selector = {
+				winbar = true,
+				statusline = true,
+			}
 		})
 	end,
 }
