@@ -5,6 +5,7 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"williamboman/mason.nvim",
 			"hrsh7th/nvim-cmp",
+			"ray-x/lsp_signature.nvim",
 			"j-hui/fidget.nvim",
 		},
 		event = { "BufReadPre", "BufNewFile" },
@@ -60,6 +61,8 @@ return {
 			})
 
 			require("fidget").setup({})
+
+			require("lsp_signature").setup({})
 		end,
 	},
 	{
