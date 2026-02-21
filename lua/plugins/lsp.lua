@@ -2,8 +2,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"williamboman/mason-lspconfig.nvim",
-			"williamboman/mason.nvim",
+			"mason-org/mason-lspconfig.nvim",
+			"mason-org/mason.nvim",
 			"hrsh7th/nvim-cmp",
 			"ray-x/lsp_signature.nvim",
 			"j-hui/fidget.nvim",
@@ -24,32 +24,53 @@ return {
 				ensure_installed = {
 					"lua_ls",
 				},
+			})
 
-				-- NOTE: default handlers for servers setup
-				handlers = {
-					function(server_name)
-						require("lspconfig")[server_name].setup {}
-					end,
-					["lua_ls"] = function()
-						require("lspconfig").lua_ls.setup({
-							settings = {
-								Lua = {
-									diagnostics = {
-										globals = { "vim" }
-									}
-								}
-							}
-						})
-					end,
+			-- ["sourcekit"] = function()
+			-- 		require("sourcekit").sourcekit.setup({
+			-- 			cmd = {
+			-- 				"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
+			-- 			},
+			-- 		})
+			-- end,
+			-- }
 
-					-- ["sourcekit"] = function()
-					-- 		require("sourcekit").sourcekit.setup({
-					-- 			cmd = {
-					-- 				"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
-					-- 			},
-					-- 		})
-					-- end,
+			vim.lsp.config("lua_ls", {
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" }
+						}
+					}
 				}
+			})
+
+			vim.lsp.config("omnisharp", {
+				FormattingOptions = {
+					EnableEditorConfigSupport = true,
+					OrganizeImports = true,
+				},
+				MsBuild = {},
+				RenameOptions = {},
+				RoslynExtensionsOptions = {
+					EnableDecompilationSupport = true,
+					EnableAnalyzersSupport = true,
+					EnableImportCompletion = true,
+					AnalyzeOpenDocumentsOnly = false,
+				},
+				Sdk = {
+					IncludePrereleases = true
+				},
+				on_attach = function(_, bufnr)
+					vim.keymap.set("n", "<leader>gd", require("omnisharp_extended").telescope_lsp_definition,
+						{ noremap = true })
+					vim.keymap.set("n", "<leader>gi", require("omnisharp_extended").telescope_lsp_implementation,
+						{ noremap = true })
+					vim.keymap.set("n", "<leader>gr", require("omnisharp_extended").telescope_lsp_references,
+						{ noremap = true })
+					vim.keymap.set("n", "<leader>go", require("omnisharp_extended").telescope_lsp_type_definition,
+						{ noremap = true })
+				end,
 			})
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
