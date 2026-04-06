@@ -10,6 +10,10 @@ vim.keymap.set("n", "<leader>dv[", "<cmd>DiffviewOpen<cr>", { desc = "DiffviewOp
 vim.keymap.set("n", "<leader>dv]", "<cmd>DiffviewClose<cr>", { desc = "DiffviewClose" })
 vim.keymap.set("n", "<leader>dvh", "<cmd>DiffviewFileHistory<cr>", { desc = "DiffviewFileHistory" })
 
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "[c", function() require("treesitter-context").go_to_context(vim.v.count1) end)
+
 -- window navigation
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
